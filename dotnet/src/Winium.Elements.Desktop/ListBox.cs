@@ -30,7 +30,7 @@
 
         #region Public Methods and Operators
 
-        public RemoteWebElement ScrollTo(By by)
+        public IWebElement ScrollTo(By by)
         {
             var response = this.Execute(
                 ScrollToListBoxItem,

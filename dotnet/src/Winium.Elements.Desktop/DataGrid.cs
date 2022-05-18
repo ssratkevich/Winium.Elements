@@ -62,7 +62,7 @@
 
         #region Public Methods and Operators
 
-        public RemoteWebElement Find(int row, int column)
+        public IWebElement Find(int row, int column)
         {
             return this.CreateRemoteWebElementFromResponse(this.CallDataGridcellCommand(FindDataGridCell, row, column));
         }

@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Library</OutputType>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RootNamespace>OpenQA.Selenium.Winium</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RestoreSources>$(RestoreSources);../../../../Winium/dotnet/src/OpenQA.Selenium.Winium/bin/Release;https://api.nuget.org/v3/index.json</RestoreSources>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Syntellect.Winium.Elements</PackageId>
+    <Version>0.2.0</Version>
+    <Title>Winium WebDriber</Title>
+    <Description>
+        With the help of Winium.Elements you could simplify interaction
+        with such complex elements like DataGrid, ComboBox, Menu and etc.
+    </Description>
+    <Product>Winium.Elements.Desktop</Product>
+    <Authors>Syntellect, ssratkevich, 2gis</Authors>
+    <Copyright>Copyright © 2022</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+    <PackageReference Include="Syntellect.Winium.WebDriver" Version="0.1.1" />
+  </ItemGroup>
+</Project>

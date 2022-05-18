@@ -30,12 +30,12 @@
 
         #region Public Methods and Operators
 
-        public RemoteWebElement FindItem(string path)
+        public IWebElement FindItem(string path)
         {
             return this.CallMenuItemCommand(FindMenuItem, path);
         }
 
-        public RemoteWebElement SelectItem(string path)
+        public IWebElement SelectItem(string path)
         {
             return this.CallMenuItemCommand(SelectMenuItem, path);
         }
@@ -44,7 +44,7 @@
 
         #region Methods
 
-        private RemoteWebElement CallMenuItemCommand(string command, string path)
+        private IWebElement CallMenuItemCommand(string command, string path)
         {
             var parameters = new Dictionary<string, object> { { "id", this.Id }, { "path", path } };
             var response = this.Execute(command, parameters);

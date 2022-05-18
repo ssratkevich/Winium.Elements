@@ -63,12 +63,12 @@
             this.CallComboBoxCommand(ExpandComboBox);
         }
 
-        public RemoteWebElement FindSelected(int row, int column)
+        public IWebElement FindSelected(int row, int column)
         {
             return this.CreateRemoteWebElementFromResponse(this.CallComboBoxCommand(FindComboBoxSelectedItem));
         }
 
-        public RemoteWebElement ScrollTo(By by)
+        public IWebElement ScrollTo(By by)
         {
             var response = this.Execute(
                 ScrollToComboBoxItem,

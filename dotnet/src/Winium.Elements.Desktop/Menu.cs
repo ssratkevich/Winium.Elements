@@ -1,14 +1,11 @@
-﻿namespace Winium.Elements.Desktop
+﻿using System.Collections.Generic;
+using OpenQA.Selenium;
+
+namespace Winium.Elements.Desktop
 {
-    #region using
-
-    using System.Collections.Generic;
-
-    using OpenQA.Selenium;
-    using OpenQA.Selenium.Remote;
-
-    #endregion
-
+    /// <summary>
+    /// Wrapper for Menu element.
+    /// </summary>
     public class Menu : DesktopElement
     {
         #region Constants
@@ -21,6 +18,10 @@
 
         #region Constructors and Destructors
 
+        /// <summary>
+        /// Creates wrapper web element representing Menu.
+        /// </summary>
+        /// <param name="element">Web element representing Menu.</param>
         public Menu(IWebElement element)
             : base(element)
         {
@@ -30,27 +31,34 @@
 
         #region Public Methods and Operators
 
-        public IWebElement FindItem(string path)
-        {
-            return this.CallMenuItemCommand(FindMenuItem, path);
-        }
+        /// <summary>
+        /// Find element by path.
+        /// </summary>
+        /// <param name="path">Headers path with '$' separator (ex:control$view$zoom).</param>
+        /// <returns>Found element.</returns>
+        public IWebElement FindItem(string path) =>
+            this.CallMenuItemCommand(FindMenuItem, path);
 
-        public IWebElement SelectItem(string path)
-        {
-            return this.CallMenuItemCommand(SelectMenuItem, path);
-        }
+        /// <summary>
+        /// Select element by path.
+        /// </summary>
+        /// <param name="path">Headers path with '$' separator (ex:control$view$zoom).</param>
+        /// <returns>Selected element.</returns>
+        public IWebElement SelectItem(string path) =>
+            this.CallMenuItemCommand(SelectMenuItem, path);
 
         #endregion
 
         #region Methods
 
-        private IWebElement CallMenuItemCommand(string command, string path)
-        {
-            var parameters = new Dictionary<string, object> { { "id", this.Id }, { "path", path } };
-            var response = this.Execute(command, parameters);
-
-            return this.CreateRemoteWebElementFromResponse(response);
-        }
+        private IWebElement CallMenuItemCommand(string command, string path) =>
+            this.CreateRemoteWebElementFromResponse(
+                this.Execute(command,
+                    new Dictionary<string, object>
+                    { 
+                        { "id", this.Id},
+                        { "path", path}
+                    }));
 
         #endregion
     }

@@ -24,6 +24,11 @@
     <RepositoryUrl>https://github.com/ssratkevich/Winium.Elements</RepositoryUrl>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Include="..\..\..\SmallLogo.png">
       <Pack>True</Pack>

@@ -1,16 +1,12 @@
-﻿namespace Winium.Elements.Desktop
+﻿using System.Collections.Generic;
+using OpenQA.Selenium;
+using Winium.Elements.Desktop.Extensions;
+
+namespace Winium.Elements.Desktop
 {
-    #region using
-
-    using System.Collections.Generic;
-
-    using OpenQA.Selenium;
-    using OpenQA.Selenium.Remote;
-
-    using Winium.Elements.Desktop.Extensions;
-
-    #endregion
-
+    /// <summary>
+    /// ListBox representation.
+    /// </summary>
     public class ListBox : DesktopElement
     {
         #region Constants
@@ -21,6 +17,10 @@
 
         #region Constructors and Destructors
 
+        /// <summary>
+        /// Creates a wrapper for web element representing ListBox.
+        /// </summary>
+        /// <param name="element">Web element representing ListBox.</param>
         public ListBox(IWebElement element)
             : base(element)
         {
@@ -30,19 +30,21 @@
 
         #region Public Methods and Operators
 
-        public IWebElement ScrollTo(By by)
-        {
-            var response = this.Execute(
-                ScrollToListBoxItem,
-                new Dictionary<string, object>
+        /// <summary>
+        /// Scrolls to element given by strategy.
+        /// </summary>
+        /// <param name="by">Element search strategy.</param>
+        /// <returns>Element.</returns>
+        public IWebElement ScrollTo(By by) =>
+            this.CreateRemoteWebElementFromResponse(
+                this.Execute(
+                    ScrollToListBoxItem,
+                    new Dictionary<string, object>
                     {
                         { "id", this.Id },
                         { "using", by.GetStrategy() },
                         { "value", by.GetValue() },
-                    });
-
-            return this.CreateRemoteWebElementFromResponse(response);
-        }
+                    }));
 
         #endregion
     }

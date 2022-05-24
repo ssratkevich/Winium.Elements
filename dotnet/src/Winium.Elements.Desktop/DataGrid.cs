@@ -1,14 +1,12 @@
-﻿namespace Winium.Elements.Desktop
+﻿using System.Collections.Generic;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
+
+namespace Winium.Elements.Desktop
 {
-    #region using
-
-    using System.Collections.Generic;
-
-    using OpenQA.Selenium;
-    using OpenQA.Selenium.Remote;
-
-    #endregion
-
+    /// <summary>
+    /// Represents a DataGrid control.
+    /// </summary>
     public class DataGrid : DesktopElement
     {
         #region Constants
@@ -27,6 +25,10 @@
 
         #region Constructors and Destructors
 
+        /// <summary>
+        /// Creates DataGrid wrapper element.
+        /// </summary>
+        /// <param name="element">Web element that is DataGrid.</param>
         public DataGrid(IWebElement element)
             : base(element)
         {
@@ -36,6 +38,9 @@
 
         #region Public Properties
 
+        /// <summary>
+        /// Columns count.
+        /// </summary>
         public int ColumnCount
         {
             get
@@ -47,6 +52,9 @@
             }
         }
 
+        /// <summary>
+        /// Rows count.
+        /// </summary>
         public int RowCount
         {
             get
@@ -62,30 +70,42 @@
 
         #region Public Methods and Operators
 
-        public IWebElement Find(int row, int column)
-        {
-            return this.CreateRemoteWebElementFromResponse(this.CallDataGridcellCommand(FindDataGridCell, row, column));
-        }
+        /// <summary>
+        /// Find element in given position.
+        /// </summary>
+        /// <param name="row">Row number.</param>
+        /// <param name="column">Column number.</param>
+        /// <returns>Element.</returns>
+        public IWebElement Find(int row, int column) =>
+            this.CreateRemoteWebElementFromResponse(this.CallDataGridCellCommand(FindDataGridCell, row, column));
 
-        public void ScrollTo(int row, int column)
-        {
-            this.CallDataGridcellCommand(ScrollToDataGridCell, row, column);
-        }
+        /// <summary>
+        /// Scroll view to element.
+        /// </summary>
+        /// <param name="row">Row number.</param>
+        /// <param name="column">Column number.</param>
+        public void ScrollTo(int row, int column) =>
+            this.CallDataGridCellCommand(ScrollToDataGridCell, row, column);
 
-        public void Select(int row, int column)
-        {
-            this.CallDataGridcellCommand(SelectDataGridCell, row, column);
-        }
+        /// <summary>
+        /// Select element.
+        /// </summary>
+        /// <param name="row">Row number.</param>
+        /// <param name="column">Column number.</param>
+        public void Select(int row, int column) =>
+            this.CallDataGridCellCommand(SelectDataGridCell, row, column);
 
         #endregion
 
         #region Methods
 
-        private Response CallDataGridcellCommand(string command, int row, int column)
-        {
-            var parameters = new Dictionary<string, object> { { "id", this.Id }, { "row", row }, { "column", column } };
-            return this.Execute(command, parameters);
-        }
+        private Response CallDataGridCellCommand(string command, int row, int column) =>
+            this.Execute(command, new Dictionary<string, object>
+            {
+                { "id", this.Id },
+                { "row", row },
+                { "column", column }
+            });
 
         #endregion
     }

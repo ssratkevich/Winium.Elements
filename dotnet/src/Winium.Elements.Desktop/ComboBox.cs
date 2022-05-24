@@ -1,16 +1,13 @@
-﻿namespace Winium.Elements.Desktop
+﻿using System.Collections.Generic;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
+using Winium.Elements.Desktop.Extensions;
+
+namespace Winium.Elements.Desktop
 {
-    #region using
-
-    using System.Collections.Generic;
-
-    using OpenQA.Selenium;
-    using OpenQA.Selenium.Remote;
-
-    using Winium.Elements.Desktop.Extensions;
-
-    #endregion
-
+    /// <summary>
+    /// Represents ComboBox control.
+    /// </summary>
     public class ComboBox : DesktopElement
     {
         #region Constants
@@ -29,6 +26,10 @@
 
         #region Constructors and Destructors
 
+        /// <summary>
+        /// Creates a wrapper for web element representing ComboBox control.
+        /// </summary>
+        /// <param name="element">Web element representing ComboBox control.</param>
         public ComboBox(IWebElement element)
             : base(element)
         {
@@ -38,6 +39,9 @@
 
         #region Public Properties
 
+        /// <summary>
+        /// Is ComboBox expanded.
+        /// </summary>
         public bool IsExpanded
         {
             get
@@ -53,21 +57,30 @@
 
         #region Public Methods and Operators
 
-        public void Collapse()
-        {
+        /// <summary>
+        /// Collapse comboBox.
+        /// </summary>
+        public void Collapse() =>
             this.CallComboBoxCommand(CollapseComboBox);
-        }
 
-        public void Expand()
-        {
+        /// <summary>
+        /// Expand comboBox.
+        /// </summary>
+        public void Expand() =>
             this.CallComboBoxCommand(ExpandComboBox);
-        }
 
-        public IWebElement FindSelected(int row, int column)
-        {
-            return this.CreateRemoteWebElementFromResponse(this.CallComboBoxCommand(FindComboBoxSelectedItem));
-        }
+        /// <summary>
+        /// Find selected item.
+        /// </summary>
+        /// <returns>Selected element.</returns>
+        public IWebElement FindSelected() =>
+            this.CreateRemoteWebElementFromResponse(this.CallComboBoxCommand(FindComboBoxSelectedItem));
 
+        /// <summary>
+        /// Scroll to element given by strategy.
+        /// </summary>
+        /// <param name="by">Element search strategy.</param>
+        /// <returns>Element.</returns>
         public IWebElement ScrollTo(By by)
         {
             var response = this.Execute(
@@ -86,11 +99,11 @@
 
         #region Methods
 
-        private Response CallComboBoxCommand(string command)
-        {
-            var parameters = new Dictionary<string, object> { { "id", this.Id } };
-            return this.Execute(command, parameters);
-        }
+        private Response CallComboBoxCommand(string command) =>
+            this.Execute(command, new Dictionary<string, object>
+            {
+                { "id", this.Id }
+            });
 
         #endregion
     }

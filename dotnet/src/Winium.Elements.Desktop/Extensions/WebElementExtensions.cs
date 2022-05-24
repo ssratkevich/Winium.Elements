@@ -1,55 +1,76 @@
-﻿namespace Winium.Elements.Desktop.Extensions
+﻿using System.Reflection;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
+
+namespace Winium.Elements.Desktop.Extensions
 {
-    #region using
-
-    using System.Reflection;
-
-    using OpenQA.Selenium;
-    using OpenQA.Selenium.Remote;
-
-    #endregion
-
+    /// <summary>
+    /// WebElement extensions.
+    /// </summary>
     public static class WebElementExtensions
     {
-        #region Public Methods and Operators
+        private static readonly MethodInfo ExecuteMethodInfo;
+        private static readonly PropertyInfo IdPropertyInfo;
 
-        public static DataGrid ToDataGrid(this IWebElement element)
+        static WebElementExtensions()
         {
-            return new DataGrid(element);
+            var type = typeof(RemoteWebElement);
+            ExecuteMethodInfo = type.GetMethod("Execute", BindingFlags.NonPublic | BindingFlags.Instance);
+            IdPropertyInfo = type.GetProperty("Id", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty);
         }
 
-        public static ListBox ToListBox(this IWebElement element)
-        {
-            return new ListBox(element);
-        }
 
-        public static ComboBox ToComboBox(this IWebElement element)
-        {
-            return new ComboBox(element);
-        }
+        /// <summary>
+        /// Creates DataGrid wrapper for given element.
+        /// </summary>
+        /// <param name="element">WebElement representing DataGrid.</param>
+        /// <returns>DataGrid wrapper.</returns>
+        public static DataGrid ToDataGrid(this IWebElement element) =>
+            new DataGrid(element);
 
-        public static Menu ToMenu(this IWebElement element)
-        {
-            return new Menu(element);
-        }
+        /// <summary>
+        /// Creates ListBox wrapper for given element.
+        /// </summary>
+        /// <param name="element">WebElement representing ListBox.</param>
+        /// <returns>ListBox wrapper.</returns>
+        public static ListBox ToListBox(this IWebElement element) =>
+            new ListBox(element);
 
-        #endregion
+        /// <summary>
+        /// Creates ComboBox wrapper for given element.
+        /// </summary>
+        /// <param name="element">WebElement representing ComboBox.</param>
+        /// <returns>ComboBox wrapper.</returns>
+        public static ComboBox ToComboBox(this IWebElement element) =>
+            new ComboBox(element);
 
-        #region Methods
+        /// <summary>
+        /// Creates Menu wrapper for given element.
+        /// </summary>
+        /// <param name="element">WebElement representing Menu.</param>
+        /// <returns>Menu wrapper.</returns>
+        public static Menu ToMenu(this IWebElement element) =>
+            new Menu(element);
 
-        internal static Response Execute(this IWebElement element, params object[] parameters)
-        {
-            var methodInfo = element.GetType().GetMethod("Execute", BindingFlags.NonPublic | BindingFlags.Instance);
-            return (Response)methodInfo.Invoke(element, parameters);
-        }
+        /// <summary>
+        /// Helper to call RemoteWebElement.Execute method with signature:
+        /// <para>
+        /// Response Execute(string commandToExecute, Dictionary&lt;string, object&gt; parameters);
+        /// </para>
+        /// </summary>
+        /// <param name="element">Target element.</param>
+        /// <param name="parameters">commandToExecute: string, parameters: Dictionary&lt;string, object&gt;.</param>
+        /// <returns>Response.</returns>
+        public static Response Execute(this IWebElement element, params object[] parameters) =>
+            (Response)ExecuteMethodInfo.Invoke(element, parameters);
 
-        internal static string GetId(this IWebElement element)
-        {
-            var propertyInfo = element.GetType()
-                .GetProperty("Id", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty);
-            return propertyInfo.GetValue(element, null).ToString();
-        }
+        /// <summary>
+        /// Helper to get Element identifier.
+        /// </summary>
+        /// <param name="element">Target element.</param>
+        /// <returns>Element UID.</returns>
+        public static string GetId(this IWebElement element) =>
+            IdPropertyInfo.GetValue(element, null).ToString();
 
-        #endregion
     }
 }
